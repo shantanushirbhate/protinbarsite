@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from "react";
+import Swipereffect from "./components/Scrollingeffect";
 
 import {
   AppBar,
@@ -10,7 +12,6 @@ import {
   IconButton,
   Card,
   CardContent,
-  Chip,
   Stack,
   TextField,
   Drawer,
@@ -40,6 +41,42 @@ import { motion, useScroll, useTransform } from "framer-motion";
 /* import ProteinScene from "./components/ProteinScene"; */
 
 const MBox = motion.create(Box);
+
+/* =========================================
+   RESPONSIVE PAGE CONTAINER
+   Symmetrical left and right spacing
+========================================= */
+
+const PAGE_GUTTER = {
+  xs: "20px",
+  sm: "32px",
+  md: "48px",
+  lg: "72px",
+  xl: "96px",
+};
+
+function PageContainer({ children, sx = {}, ...props }) {
+  return (
+    <Container
+      maxWidth={false}
+      disableGutters
+      {...props}
+      sx={{
+        width: "100%",
+        maxWidth: "1920px",
+        mx: "auto",
+        px: PAGE_GUTTER,
+        ...sx,
+      }}
+    >
+      {children}
+    </Container>
+  );
+}
+
+/* =========================================
+   COLORS AND ASSETS
+========================================= */
 
 const COLORS = {
   brown: "#291711",
@@ -179,7 +216,9 @@ function TypingText() {
         }
       } else if (text === "") {
         setIsDeleting(false);
-        setPhraseIndex((previous) => (previous + 1) % typingPhrases.length);
+        setPhraseIndex(
+          (previous) => (previous + 1) % typingPhrases.length
+        );
       } else {
         setText(currentPhrase.substring(0, text.length - 1));
       }
@@ -264,6 +303,7 @@ function AnimatedText({
           <Box component="span" key={lineIndex} sx={{ display: "block" }}>
             {line.split(" ").map((word, wordIndex) => {
               const cleanWord = word.replace(/[.,!?]/g, "");
+
               const highlighted =
                 highlightWords.includes(word) ||
                 highlightWords.includes(cleanWord);
@@ -372,7 +412,11 @@ export default function App() {
 
   const { scrollYProgress } = useScroll();
 
-  const progressScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
+  const progressScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, 1]
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -405,6 +449,7 @@ export default function App() {
     textDecoration: "none",
     position: "relative",
     transition: "color .25s ease",
+
     "&:after": {
       content: '""',
       position: "absolute",
@@ -415,9 +460,11 @@ export default function App() {
       background: COLORS.yellow,
       transition: "width .25s ease",
     },
+
     "&:hover": {
       color: COLORS.yellow,
       background: "transparent",
+
       "&:after": {
         width: "100%",
       },
@@ -435,6 +482,7 @@ export default function App() {
     letterSpacing: 1.2,
     textTransform: "uppercase",
     transition: "all .3s ease",
+
     "&:hover": {
       background: "#fff",
       transform: "translateY(-3px)",
@@ -479,7 +527,7 @@ export default function App() {
           transition: "all .35s ease",
         }}
       >
-        <Container maxWidth="xl">
+        <PageContainer>
           <Toolbar
             disableGutters
             sx={{
@@ -497,6 +545,7 @@ export default function App() {
                 fontSize: { xs: 32, md: 38 },
                 letterSpacing: -1.5,
                 textDecoration: "none",
+
                 "& span": {
                   color: COLORS.yellow,
                 },
@@ -515,7 +564,12 @@ export default function App() {
               }}
             >
               {navLinks.map(([label, id]) => (
-                <Button key={id} component="a" href={`#${id}`} sx={navButtonSx}>
+                <Button
+                  key={id}
+                  component="a"
+                  href={`#${id}`}
+                  sx={navButtonSx}
+                >
                   {label}
                 </Button>
               ))}
@@ -546,7 +600,7 @@ export default function App() {
               </IconButton>
             </Stack>
           </Toolbar>
-        </Container>
+        </PageContainer>
       </AppBar>
 
       {/* =====================================
@@ -581,7 +635,10 @@ export default function App() {
               ONE<span style={{ color: COLORS.yellow }}>.</span>
             </Typography>
 
-            <IconButton onClick={() => setDrawer(false)} sx={{ color: "#fff" }}>
+            <IconButton
+              onClick={() => setDrawer(false)}
+              sx={{ color: "#fff" }}
+            >
               <X />
             </IconButton>
           </Stack>
@@ -601,6 +658,7 @@ export default function App() {
                 fontWeight: 800,
                 letterSpacing: 1,
                 textTransform: "uppercase",
+
                 "&:hover": {
                   color: COLORS.yellow,
                   background: "transparent",
@@ -657,8 +715,7 @@ export default function App() {
             }}
           />
 
-          <Container
-            maxWidth="xl"
+          <PageContainer
             sx={{
               position: "relative",
               zIndex: 2,
@@ -681,7 +738,12 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
               >
-                <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={1.5}
+                  mb={3}
+                >
                   <Box
                     sx={{
                       width: 35,
@@ -757,7 +819,7 @@ export default function App() {
                 </Button>
               </MBox>
 
-              {/* Quality stamp */}
+              {/* QUALITY STAMP */}
               <Box
                 sx={{
                   position: "absolute",
@@ -779,6 +841,7 @@ export default function App() {
                 <Typography sx={{ fontSize: 9, letterSpacing: 2 }}>
                   HIGH
                 </Typography>
+
                 <Typography
                   sx={{
                     fontFamily: "Anton",
@@ -787,12 +850,13 @@ export default function App() {
                 >
                   QUALITY
                 </Typography>
+
                 <Typography sx={{ fontSize: 6, letterSpacing: 1 }}>
                   GOODNESS IN EVERY BITE
                 </Typography>
               </Box>
 
-              {/* Protein note */}
+              {/* PROTEIN NOTE */}
               <Stack
                 direction="row"
                 alignItems="center"
@@ -829,7 +893,7 @@ export default function App() {
               </Stack>
             </Box>
 
-            {/* Optional transparent 3D model */}
+            {/* OPTIONAL 3D MODEL */}
             <MBox
               initial={{
                 opacity: 0,
@@ -871,7 +935,7 @@ export default function App() {
             >
               SNACK BOLD. LIVE STRONG.
             </Typography>
-          </Container>
+          </PageContainer>
         </Box>
 
         {/* =====================================
@@ -886,27 +950,34 @@ export default function App() {
             background: COLORS.cream,
           }}
         >
-          <Container maxWidth="lg">
+          <PageContainer>
             <Box
               sx={{
                 display: "grid",
                 gridTemplateColumns: {
-                  xs: "repeat(2,1fr)",
-                  md: "repeat(5,1fr)",
+                  xs: "repeat(2, minmax(0, 1fr))",
+                  md: "repeat(5, minmax(0, 1fr))",
                 },
-                gap: { xs: 4, md: 2 },
+                gap: { xs: 4, md: 3 },
+                alignItems: "stretch",
               }}
             >
               {benefits.map(([Icon, title, detail], i) => (
-                <Reveal key={title} delay={i * 0.08}>
+                <Reveal
+                  key={title}
+                  delay={i * 0.08}
+                  sx={{
+                    gridColumn:
+                      i === 4
+                        ? { xs: "1 / -1", md: "auto" }
+                        : "auto",
+                  }}
+                >
                   <Stack
                     alignItems="center"
                     textAlign="center"
                     spacing={2}
-                    sx={{
-                      gridColumn:
-                        i === 4 ? { xs: "1 / -1", md: "auto" } : "auto",
-                    }}
+                    sx={{ height: "100%" }}
                   >
                     <Box
                       sx={{
@@ -919,6 +990,7 @@ export default function App() {
                         color: COLORS.brown,
                         background: "rgba(255,255,255,.7)",
                         transition: "all .3s ease",
+
                         "&:hover": {
                           background: COLORS.yellow,
                           borderColor: COLORS.yellow,
@@ -938,6 +1010,7 @@ export default function App() {
                     >
                       {title}
                       <br />
+
                       <Box
                         component="b"
                         sx={{
@@ -952,1161 +1025,1193 @@ export default function App() {
                 </Reveal>
               ))}
             </Box>
-          </Container>
+          </PageContainer>
         </Box>
 
         {/* =====================================
-            STORY
+            SCROLL IMAGE SEQUENCE
         ===================================== */}
 
-        {/* PREMIUM STORY GIF — ANGULAR EDITION */}
+        <Swipereffect />
 
+        {/* =====================================
+            STORY — PREMIUM EDITORIAL SECTION
+        ===================================== */}
 
-{/* =====================================
-    STORY — PREMIUM EDITORIAL SECTION
-===================================== */}
-
-<Box
-  component="section"
-  id="story"
-  sx={{
-    position: "relative",
-    py: { xs: 9, md: 14 },
-    background: COLORS.brown,
-    overflow: "hidden",
-    isolation: "isolate",
-  }}
->
-  {/* Background decoration */}
-  <Box
-    sx={{
-      position: "absolute",
-      top: -180,
-      left: -180,
-      width: 450,
-      height: 450,
-      borderRadius: "50%",
-      background: "rgba(255,228,92,.07)",
-      filter: "blur(100px)",
-      pointerEvents: "none",
-    }}
-  />
-
-  <Box
-    sx={{
-      position: "absolute",
-      right: -150,
-      bottom: -180,
-      width: 450,
-      height: 450,
-      borderRadius: "50%",
-      background: "rgba(233,104,45,.12)",
-      filter: "blur(100px)",
-      pointerEvents: "none",
-    }}
-  />
-
-  <Container maxWidth="xl" sx={{ position: "relative", zIndex: 1 }}>
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: {
-          xs: "1fr",
-          md: "1fr 1fr",
-        },
-        alignItems: "center",
-        gap: { xs: 5, md: 9, lg: 12 },
-      }}
-    >
-      {/* LEFT — STORY CONTENT */}
-      <Reveal>
-        <Box sx={{ maxWidth: 570 }}>
-          <Stack direction="row" alignItems="center" spacing={1.5} mb={3}>
-            <Box
-              sx={{
-                width: 34,
-                height: 2,
-                background: COLORS.yellow,
-              }}
-            />
-
-            <Typography
-              sx={{
-                color: COLORS.yellow,
-                fontSize: 10,
-                fontWeight: 900,
-                letterSpacing: 3,
-                textTransform: "uppercase",
-              }}
-            >
-              More than just a protein bar
-            </Typography>
-          </Stack>
-
-          <AnimatedText
-            text={"GOOD FOOD.\nGOOD ENERGY.\nONE PURPOSE."}
-            highlightWords={["ONE", "PURPOSE."]}
+        <Box
+          component="section"
+          id="story"
+          sx={{
+            position: "relative",
+            py: { xs: 9, md: 14 },
+            background: COLORS.brown,
+            overflow: "hidden",
+            isolation: "isolate",
+          }}
+        >
+          {/* BACKGROUND DECORATION */}
+          <Box
             sx={{
-              color: "#fff",
-              fontFamily: "Anton, sans-serif",
-              fontSize: {
-                xs: 53,
-                sm: 67,
-                md: 70,
-                lg: 86,
-              },
-              lineHeight: 0.99,
-              letterSpacing: -0.5,
-              textTransform: "uppercase",
+              position: "absolute",
+              top: -180,
+              left: -180,
+              width: 450,
+              height: 450,
+              borderRadius: "50%",
+              background: "rgba(255,228,92,.07)",
+              filter: "blur(100px)",
+              pointerEvents: "none",
             }}
           />
 
-          <Typography
-            sx={{
-              mt: 3.5,
-              maxWidth: 480,
-              color: "rgba(255,255,255,.68)",
-              fontSize: { xs: 13, md: 15 },
-              lineHeight: 2,
-            }}
-          >
-            We believe great nutrition should never feel like a compromise.
-            That's why ONE brings together bold flavours, quality ingredients
-            and protein-packed goodness in every bite.
-          </Typography>
-
-          <Typography
-            sx={{
-              mt: 2,
-              maxWidth: 480,
-              color: "rgba(255,255,255,.68)",
-              fontSize: { xs: 13, md: 15 },
-              lineHeight: 2,
-            }}
-          >
-            Whether you're chasing a fitness goal, powering through a busy day
-            or simply craving something delicious, we're here to fuel your
-            everyday.
-          </Typography>
-
-          {/* Story highlights */}
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: "repeat(2,1fr)",
-              gap: 2,
-              mt: 4,
-              maxWidth: 430,
+              position: "absolute",
+              right: -150,
+              bottom: -180,
+              width: 450,
+              height: 450,
+              borderRadius: "50%",
+              background: "rgba(233,104,45,.12)",
+              filter: "blur(100px)",
+              pointerEvents: "none",
             }}
-          >
-            {[
-              ["20G", "PROTEIN PER BAR"],
-              ["ZERO", "ADDED SUGAR"],
-            ].map(([value, label]) => (
-              <Box
-                key={label}
-                sx={{
-                  p: 2.2,
-                  borderLeft: `2px solid ${COLORS.yellow}`,
-                  background: "rgba(255,255,255,.045)",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: COLORS.yellow,
-                    fontFamily: "Anton",
-                    fontSize: 34,
-                    lineHeight: 1,
-                  }}
-                >
-                  {value}
-                </Typography>
+          />
 
-                <Typography
-                  sx={{
-                    mt: 1,
-                    color: "rgba(255,255,255,.65)",
-                    fontSize: 8,
-                    fontWeight: 900,
-                    letterSpacing: 1.5,
-                  }}
-                >
-                  {label}
-                </Typography>
-              </Box>
-            ))}
-          </Box>
-
-          <Button
-            href="#flavours"
-            endIcon={<ArrowUpRight size={17} />}
+          <PageContainer
             sx={{
-              mt: 4,
-              ...yellowButtonSx,
+              position: "relative",
+              zIndex: 1,
             }}
           >
-            Explore our flavours
-          </Button>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "minmax(0, 1fr)",
+                  md: "repeat(2, minmax(0, 1fr))",
+                },
+                alignItems: "center",
+                gap: { xs: 5, md: 9, lg: 12 },
+              }}
+            >
+              {/* LEFT — STORY CONTENT */}
+              <Reveal>
+                <Box sx={{ maxWidth: 570 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1.5}
+                    mb={3}
+                  >
+                    <Box
+                      sx={{
+                        width: 34,
+                        height: 2,
+                        background: COLORS.yellow,
+                      }}
+                    />
+
+                    <Typography
+                      sx={{
+                        color: COLORS.yellow,
+                        fontSize: 10,
+                        fontWeight: 900,
+                        letterSpacing: 3,
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      More than just a protein bar
+                    </Typography>
+                  </Stack>
+
+                  <AnimatedText
+                    text={"GOOD FOOD.\nGOOD ENERGY.\nONE PURPOSE."}
+                    highlightWords={["ONE", "PURPOSE."]}
+                    sx={{
+                      color: "#fff",
+                      fontFamily: "Anton, sans-serif",
+                      fontSize: {
+                        xs: 53,
+                        sm: 67,
+                        md: 70,
+                        lg: 86,
+                      },
+                      lineHeight: 0.99,
+                      letterSpacing: -0.5,
+                      textTransform: "uppercase",
+                    }}
+                  />
+
+                  <Typography
+                    sx={{
+                      mt: 3.5,
+                      maxWidth: 480,
+                      color: "rgba(255,255,255,.68)",
+                      fontSize: { xs: 13, md: 15 },
+                      lineHeight: 2,
+                    }}
+                  >
+                    We believe great nutrition should never feel like a
+                    compromise. That's why ONE brings together bold flavours,
+                    quality ingredients and protein-packed goodness in every
+                    bite.
+                  </Typography>
+
+                  <Typography
+                    sx={{
+                      mt: 2,
+                      maxWidth: 480,
+                      color: "rgba(255,255,255,.68)",
+                      fontSize: { xs: 13, md: 15 },
+                      lineHeight: 2,
+                    }}
+                  >
+                    Whether you're chasing a fitness goal, powering through a
+                    busy day or simply craving something delicious, we're here
+                    to fuel your everyday.
+                  </Typography>
+
+                  {/* STORY HIGHLIGHTS */}
+                  <Box
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(2, minmax(0, 1fr))",
+                      gap: 2,
+                      mt: 4,
+                      maxWidth: 430,
+                    }}
+                  >
+                    {[
+                      ["20G", "PROTEIN PER BAR"],
+                      ["ZERO", "ADDED SUGAR"],
+                    ].map(([value, label]) => (
+                      <Box
+                        key={label}
+                        sx={{
+                          p: 2.2,
+                          borderLeft: `2px solid ${COLORS.yellow}`,
+                          background: "rgba(255,255,255,.045)",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            color: COLORS.yellow,
+                            fontFamily: "Anton",
+                            fontSize: 34,
+                            lineHeight: 1,
+                          }}
+                        >
+                          {value}
+                        </Typography>
+
+                        <Typography
+                          sx={{
+                            mt: 1,
+                            color: "rgba(255,255,255,.65)",
+                            fontSize: 8,
+                            fontWeight: 900,
+                            letterSpacing: 1.5,
+                          }}
+                        >
+                          {label}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Box>
+
+                  <Button
+                    href="#flavours"
+                    endIcon={<ArrowUpRight size={17} />}
+                    sx={{
+                      mt: 4,
+                      ...yellowButtonSx,
+                    }}
+                  >
+                    Explore our flavours
+                  </Button>
+                </Box>
+              </Reveal>
+
+              {/* RIGHT — PREMIUM STORY GIF */}
+              <Reveal delay={0.15}>
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: 560,
+                    mx: "auto",
+                    pt: 4,
+                    pb: 4,
+                    px: { xs: 1, sm: 1.5 },
+
+                    "&:hover .story-gif-image": {
+                      transform: "scale(1.075)",
+                    },
+
+                    "&:hover .story-main-frame": {
+                      borderColor: COLORS.yellow,
+                      boxShadow:
+                        "0 30px 90px rgba(0,0,0,.5), 0 0 35px rgba(255,228,92,.12)",
+                    },
+
+                    "&:hover .story-corner": {
+                      width: 52,
+                      height: 52,
+                      opacity: 1,
+                    },
+
+                    "&:hover .story-back-frame": {
+                      transform: "translate(13px,-13px) rotate(2deg)",
+                      borderColor: "rgba(255,228,92,.9)",
+                    },
+                  }}
+                >
+                  {/* AMBIENT GLOW */}
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      inset: "5% -10%",
+                      background:
+                        "radial-gradient(ellipse,rgba(255,228,92,.24),rgba(233,104,45,.12) 42%,transparent 72%)",
+                      filter: "blur(48px)",
+                      pointerEvents: "none",
+                    }}
+                  />
+
+                  {/* BACKGROUND NUMBER */}
+                  <Typography
+                    sx={{
+                      position: "absolute",
+                      top: -15,
+                      right: { xs: 0, sm: 8 },
+                      fontFamily: "Anton",
+                      fontSize: { xs: 90, sm: 130 },
+                      lineHeight: 1,
+                      color: "rgba(255,255,255,.055)",
+                      zIndex: 0,
+                      userSelect: "none",
+                    }}
+                  >
+                    01
+                  </Typography>
+
+                  {/* OFFSET FRAME */}
+                  <Box
+                    className="story-back-frame"
+                    sx={{
+                      position: "absolute",
+                      top: 22,
+                      left: 20,
+                      right: 0,
+                      bottom: 22,
+                      border: "1px solid rgba(255,228,92,.5)",
+                      clipPath:
+                        "polygon(0 0,90% 0,100% 12%,100% 100%,10% 100%,0 88%)",
+                      transform: "translate(7px,-7px) rotate(1deg)",
+                      transition: "all .55s cubic-bezier(.2,.7,.2,1)",
+                      pointerEvents: "none",
+                    }}
+                  />
+
+                  {/* MAIN IMAGE FRAME */}
+                  <Box
+                    className="story-main-frame"
+                    sx={{
+                      position: "relative",
+                      height: { xs: 330, sm: 410, md: 475 },
+                      overflow: "hidden",
+                      background: "#130A07",
+                      border: "1px solid rgba(255,255,255,.35)",
+                      clipPath:
+                        "polygon(0 0,90% 0,100% 10%,100% 100%,10% 100%,0 90%)",
+                      isolation: "isolate",
+                      transition: "all .5s ease",
+                      boxShadow: "0 25px 70px rgba(0,0,0,.4)",
+                    }}
+                  >
+                    {/* GIF IMAGE */}
+                    <Box
+                      component="img"
+                      className="story-gif-image"
+                      src={STORY_GIF}
+                      alt="ONE Protein fitness lifestyle"
+                      loading="lazy"
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                        transition:
+                          "transform 1.1s cubic-bezier(.2,.7,.2,1)",
+                        filter: "saturate(1.15) contrast(1.08)",
+                      }}
+                    />
+
+                    {/* CINEMATIC OVERLAY */}
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(180deg,rgba(10,5,3,.55) 0%,transparent 30%,rgba(10,5,3,.08) 45%,rgba(10,5,3,.96) 100%)",
+                        pointerEvents: "none",
+                      }}
+                    />
+
+                    {/* WARM SIDE LIGHTING */}
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(110deg,rgba(255,228,92,.17),transparent 35%,transparent 68%,rgba(233,104,45,.2))",
+                        mixBlendMode: "screen",
+                        pointerEvents: "none",
+                      }}
+                    />
+
+                    {/* TOP CAMPAIGN LABEL */}
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      sx={{
+                        position: "absolute",
+                        top: { xs: 18, sm: 25 },
+                        left: { xs: 19, sm: 28 },
+                        right: { xs: 19, sm: 28 },
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
+                      >
+                        <Box
+                          sx={{
+                            width: 7,
+                            height: 7,
+                            background: COLORS.yellow,
+                            transform: "rotate(45deg)",
+                            boxShadow: `0 0 12px ${COLORS.yellow}`,
+                          }}
+                        />
+
+                        <Typography
+                          sx={{
+                            color: "#fff",
+                            fontSize: 8,
+                            fontWeight: 900,
+                            letterSpacing: 2,
+                          }}
+                        >
+                          ONE PERFORMANCE LAB
+                        </Typography>
+                      </Stack>
+
+                      <Typography
+                        sx={{
+                          color: COLORS.yellow,
+                          fontFamily: "Anton",
+                          fontSize: 17,
+                          letterSpacing: 1,
+                        }}
+                      >
+                        NO. 001
+                      </Typography>
+                    </Stack>
+
+                    {/* VERTICAL SIDE TEXT */}
+                    <Typography
+                      sx={{
+                        position: "absolute",
+                        top: "35%",
+                        left: { xs: 8, sm: 13 },
+                        writingMode: "vertical-rl",
+                        transform: "rotate(180deg)",
+                        color: "rgba(255,255,255,.72)",
+                        fontSize: 7,
+                        fontWeight: 900,
+                        letterSpacing: 3,
+                      }}
+                    >
+                      STRENGTH / ENERGY / RECOVERY
+                    </Typography>
+
+                    {/* RIGHT TECHNICAL MARKER */}
+                    <Stack
+                      sx={{
+                        position: "absolute",
+                        top: "42%",
+                        right: { xs: 14, sm: 23 },
+                        display: { xs: "none", sm: "flex" },
+                        alignItems: "center",
+                        gap: 0.8,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: 1,
+                          height: 38,
+                          background: "rgba(255,255,255,.6)",
+                        }}
+                      />
+
+                      <Typography
+                        sx={{
+                          color: COLORS.yellow,
+                          fontSize: 7,
+                          fontWeight: 900,
+                          writingMode: "vertical-rl",
+                          letterSpacing: 2,
+                        }}
+                      >
+                        KEEP MOVING
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          width: 1,
+                          height: 38,
+                          background: "rgba(255,255,255,.6)",
+                        }}
+                      />
+                    </Stack>
+
+                    {/* BOTTOM CAMPAIGN CONTENT */}
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        left: { xs: 25, sm: 38 },
+                        right: { xs: 22, sm: 36 },
+                        bottom: { xs: 27, sm: 38 },
+                      }}
+                    >
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={1}
+                        sx={{ mb: 1.5 }}
+                      >
+                        <Box
+                          sx={{
+                            width: 25,
+                            height: 2,
+                            background: COLORS.yellow,
+                          }}
+                        />
+
+                        <Typography
+                          sx={{
+                            color: COLORS.yellow,
+                            fontSize: 9,
+                            fontWeight: 900,
+                            letterSpacing: 3,
+                          }}
+                        >
+                          FUEL YOUR POTENTIAL
+                        </Typography>
+                      </Stack>
+
+                      <Stack
+                        direction="row"
+                        alignItems="flex-end"
+                        justifyContent="space-between"
+                        gap={1}
+                      >
+                        <Box sx={{ minWidth: 0 }}>
+                          <Typography
+                            sx={{
+                              color: "#fff",
+                              fontFamily: "Anton",
+                              fontSize: { xs: 47, sm: 66, md: 76 },
+                              lineHeight: 0.83,
+                              letterSpacing: 1,
+                              textShadow: "0 5px 25px rgba(0,0,0,.35)",
+                            }}
+                          >
+                            MUSCLE
+                          </Typography>
+
+                          <Typography
+                            sx={{
+                              color: COLORS.yellow,
+                              fontFamily: "Anton",
+                              fontSize: { xs: 47, sm: 66, md: 76 },
+                              lineHeight: 0.95,
+                              letterSpacing: 1,
+                            }}
+                          >
+                            FUEL.
+                          </Typography>
+                        </Box>
+
+                        {/* PROTEIN SEAL */}
+                        <Box
+                          sx={{
+                            flexShrink: 0,
+                            width: { xs: 68, sm: 91 },
+                            height: { xs: 68, sm: 91 },
+                            mb: 0.5,
+                            borderRadius: "50%",
+                            background: COLORS.yellow,
+                            color: COLORS.dark,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            border: "4px solid rgba(255,255,255,.7)",
+                            outline: "1px solid rgba(255,228,92,.8)",
+                            outlineOffset: 4,
+                            boxShadow: "0 10px 30px rgba(0,0,0,.45)",
+                            transform: "rotate(9deg)",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontFamily: "Anton",
+                              fontSize: { xs: 25, sm: 33 },
+                              lineHeight: 1,
+                            }}
+                          >
+                            20G
+                          </Typography>
+
+                          <Typography
+                            sx={{
+                              fontSize: 7,
+                              fontWeight: 900,
+                              letterSpacing: 1.2,
+                            }}
+                          >
+                            PROTEIN
+                          </Typography>
+                        </Box>
+                      </Stack>
+
+                      <Divider
+                        sx={{
+                          my: 1.8,
+                          borderColor: "rgba(255,255,255,.3)",
+                        }}
+                      />
+
+                      <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Typography
+                          sx={{
+                            color: "rgba(255,255,255,.82)",
+                            fontSize: { xs: 8, sm: 10 },
+                            letterSpacing: 1,
+                            fontWeight: 700,
+                          }}
+                        >
+                          BIG ENERGY. BOLD FLAVOUR.
+                        </Typography>
+
+                        <Typography
+                          sx={{
+                            color: COLORS.yellow,
+                            fontSize: 8,
+                            fontWeight: 900,
+                            letterSpacing: 1.5,
+                          }}
+                        >
+                          MADE TO MOVE →
+                        </Typography>
+                      </Stack>
+                    </Box>
+
+                    {/* INNER CORNER ACCENTS */}
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        top: 0,
+                        right: "10%",
+                        width: 42,
+                        height: 42,
+                        borderTop: `2px solid ${COLORS.yellow}`,
+                        borderRight: `2px solid ${COLORS.yellow}`,
+                        opacity: 0.85,
+                        pointerEvents: "none",
+                      }}
+                    />
+
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        bottom: 0,
+                        left: "10%",
+                        width: 42,
+                        height: 42,
+                        borderBottom: `2px solid ${COLORS.yellow}`,
+                        borderLeft: `2px solid ${COLORS.yellow}`,
+                        opacity: 0.85,
+                        pointerEvents: "none",
+                      }}
+                    />
+                  </Box>
+
+                  {/* OUTSIDE CORNER BRACKETS */}
+                  {[
+                    {
+                      top: 0,
+                      left: 0,
+                      borderTop: `3px solid ${COLORS.yellow}`,
+                      borderLeft: `3px solid ${COLORS.yellow}`,
+                    },
+                    {
+                      top: 0,
+                      right: 0,
+                      borderTop: `3px solid ${COLORS.yellow}`,
+                      borderRight: `3px solid ${COLORS.yellow}`,
+                    },
+                    {
+                      bottom: 0,
+                      left: 0,
+                      borderBottom: `3px solid ${COLORS.yellow}`,
+                      borderLeft: `3px solid ${COLORS.yellow}`,
+                    },
+                    {
+                      bottom: 0,
+                      right: 0,
+                      borderBottom: `3px solid ${COLORS.yellow}`,
+                      borderRight: `3px solid ${COLORS.yellow}`,
+                    },
+                  ].map((corner, index) => (
+                    <Box
+                      key={index}
+                      className="story-corner"
+                      sx={{
+                        position: "absolute",
+                        width: 35,
+                        height: 35,
+                        zIndex: 3,
+                        opacity: 0.8,
+                        pointerEvents: "none",
+                        transition:
+                          "all .4s cubic-bezier(.2,.7,.2,1)",
+                        ...corner,
+                      }}
+                    />
+                  ))}
+
+                  {/* IMAGE FOOTER */}
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    sx={{ mt: 3, px: 0.5 }}
+                  >
+                    <Box>
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.9)",
+                          fontSize: 9,
+                          fontWeight: 900,
+                          letterSpacing: 2,
+                        }}
+                      >
+                        REAL FUEL. REAL MOVEMENT.
+                      </Typography>
+
+                      <Typography
+                        sx={{
+                          mt: 0.5,
+                          color: "rgba(255,255,255,.45)",
+                          fontSize: 7,
+                          letterSpacing: 1.5,
+                        }}
+                      >
+                        PERFORMANCE NUTRITION SERIES
+                      </Typography>
+                    </Box>
+
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                    >
+                      <Box
+                        sx={{
+                          width: 7,
+                          height: 7,
+                          borderRadius: "50%",
+                          background: COLORS.yellow,
+                          boxShadow: `0 0 12px ${COLORS.yellow}`,
+                        }}
+                      />
+
+                      <Typography
+                        sx={{
+                          color: COLORS.yellow,
+                          fontSize: 8,
+                          fontWeight: 900,
+                          letterSpacing: 1.5,
+                        }}
+                      >
+                        EST. FOR EVERYONE
+                      </Typography>
+                    </Stack>
+                  </Stack>
+                </Box>
+              </Reveal>
+            </Box>
+          </PageContainer>
         </Box>
-      </Reveal>
 
-      {/* RIGHT — PREMIUM STORY GIF */}
-      <Reveal delay={0.15}>
+        {/* =====================================
+            FLAVOURS — PREMIUM 3D ANIMATED CARDS
+        ===================================== */}
+
         <Box
+          component="section"
+          id="flavours"
           sx={{
+            py: { xs: 9, md: 14 },
+            background: COLORS.cream,
             position: "relative",
-            width: "100%",
-            maxWidth: 560,
-            mx: "auto",
-            pt: 4,
-            pb: 4,
-            px: { xs: 1, sm: 1.5 },
+            overflow: "hidden",
+            perspective: "1400px",
 
-            "&:hover .story-gif-image": {
-              transform: "scale(1.075)",
+            "@keyframes floatBadge": {
+              "0%, 100%": { transform: "translateY(0px) rotate(8deg)" },
+              "50%": { transform: "translateY(-9px) rotate(12deg)" },
             },
 
-            "&:hover .story-main-frame": {
-              borderColor: COLORS.yellow,
-              boxShadow:
-                "0 30px 90px rgba(0,0,0,.5), 0 0 35px rgba(255,228,92,.12)",
+            "@keyframes ambientFloat": {
+              "0%, 100%": { transform: "translateY(0px) scale(1)" },
+              "50%": { transform: "translateY(-15px) scale(1.04)" },
             },
 
-            "&:hover .story-corner": {
-              width: 52,
-              height: 52,
-              opacity: 1,
-            },
-
-            "&:hover .story-back-frame": {
-              transform: "translate(13px,-13px) rotate(2deg)",
-              borderColor: "rgba(255,228,92,.9)",
+            "@keyframes shine": {
+              "0%": { transform: "translateX(-150%) skewX(-20deg)" },
+              "100%": { transform: "translateX(250%) skewX(-20deg)" },
             },
           }}
         >
-          {/* Ambient glow */}
+          {/* BACKGROUND GLOW */}
           <Box
             sx={{
               position: "absolute",
-              inset: "5% -10%",
-              background:
-                "radial-gradient(ellipse,rgba(255,228,92,.24),rgba(233,104,45,.12) 42%,transparent 72%)",
-              filter: "blur(48px)",
+              top: "15%",
+              left: "-120px",
+              width: 300,
+              height: 300,
+              borderRadius: "50%",
+              background: "rgba(233,104,45,.10)",
+              filter: "blur(90px)",
+              animation: "ambientFloat 7s ease-in-out infinite",
               pointerEvents: "none",
             }}
           />
 
-          {/* Background number */}
-          <Typography
-            sx={{
-              position: "absolute",
-              top: -15,
-              right: { xs: 0, sm: 8 },
-              fontFamily: "Anton",
-              fontSize: { xs: 90, sm: 130 },
-              lineHeight: 1,
-              color: "rgba(255,255,255,.055)",
-              zIndex: 0,
-              userSelect: "none",
-            }}
-          >
-            01
-          </Typography>
-
-          {/* Offset frame */}
           <Box
-            className="story-back-frame"
             sx={{
               position: "absolute",
-              top: 22,
-              left: 20,
-              right: 0,
-              bottom: 22,
-              border: "1px solid rgba(255,228,92,.5)",
-              clipPath:
-                "polygon(0 0,90% 0,100% 12%,100% 100%,10% 100%,0 88%)",
-              transform: "translate(7px,-7px) rotate(1deg)",
-              transition: "all .55s cubic-bezier(.2,.7,.2,1)",
+              right: "-100px",
+              bottom: "5%",
+              width: 320,
+              height: 320,
+              borderRadius: "50%",
+              background: "rgba(255,228,92,.16)",
+              filter: "blur(90px)",
+              animation: "ambientFloat 9s ease-in-out infinite",
               pointerEvents: "none",
             }}
           />
 
-          {/* Main image frame */}
-          <Box
-            className="story-main-frame"
+          <PageContainer
             sx={{
               position: "relative",
-              height: { xs: 330, sm: 410, md: 475 },
-              overflow: "hidden",
-              background: "#130A07",
-              border: "1px solid rgba(255,255,255,.35)",
-              clipPath:
-                "polygon(0 0,90% 0,100% 10%,100% 100%,10% 100%,0 90%)",
-              isolation: "isolate",
-              transition: "all .5s ease",
-              boxShadow: "0 25px 70px rgba(0,0,0,.4)",
+              zIndex: 1,
             }}
           >
-            {/* GIF image */}
-            <Box
-              component="img"
-              className="story-gif-image"
-              src={STORY_GIF}
-              alt="ONE Protein fitness lifestyle"
-              loading="lazy"
-              sx={{
-                position: "absolute",
-                inset: 0,
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "center",
-                transition: "transform 1.1s cubic-bezier(.2,.7,.2,1)",
-                filter: "saturate(1.15) contrast(1.08)",
-              }}
-            />
-
-            {/* Cinematic overlay */}
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(180deg,rgba(10,5,3,.55) 0%,transparent 30%,rgba(10,5,3,.08) 45%,rgba(10,5,3,.96) 100%)",
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Warm side lighting */}
-            <Box
-              sx={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(110deg,rgba(255,228,92,.17),transparent 35%,transparent 68%,rgba(233,104,45,.2))",
-                mixBlendMode: "screen",
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* Top campaign label */}
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{
-                position: "absolute",
-                top: { xs: 18, sm: 25 },
-                left: { xs: 19, sm: 28 },
-                right: { xs: 19, sm: 28 },
-              }}
-            >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Box
-                  sx={{
-                    width: 7,
-                    height: 7,
-                    background: COLORS.yellow,
-                    transform: "rotate(45deg)",
-                    boxShadow: `0 0 12px ${COLORS.yellow}`,
-                  }}
-                />
-
-                <Typography
-                  sx={{
-                    color: "#fff",
-                    fontSize: 8,
-                    fontWeight: 900,
-                    letterSpacing: 2,
-                  }}
-                >
-                  ONE PERFORMANCE LAB
-                </Typography>
-              </Stack>
-
-              <Typography
-                sx={{
-                  color: COLORS.yellow,
-                  fontFamily: "Anton",
-                  fontSize: 17,
-                  letterSpacing: 1,
-                }}
-              >
-                NO. 001
-              </Typography>
-            </Stack>
-
-            {/* Vertical side text */}
-            <Typography
-              sx={{
-                position: "absolute",
-                top: "35%",
-                left: { xs: 8, sm: 13 },
-                writingMode: "vertical-rl",
-                transform: "rotate(180deg)",
-                color: "rgba(255,255,255,.72)",
-                fontSize: 7,
-                fontWeight: 900,
-                letterSpacing: 3,
-              }}
-            >
-              STRENGTH / ENERGY / RECOVERY
-            </Typography>
-
-            {/* Right technical marker */}
-            <Stack
-              sx={{
-                position: "absolute",
-                top: "42%",
-                right: { xs: 14, sm: 23 },
-                display: { xs: "none", sm: "flex" },
-                alignItems: "center",
-                gap: 0.8,
-              }}
-            >
-              <Box
-                sx={{
-                  width: 1,
-                  height: 38,
-                  background: "rgba(255,255,255,.6)",
-                }}
-              />
-
-              <Typography
-                sx={{
-                  color: COLORS.yellow,
-                  fontSize: 7,
-                  fontWeight: 900,
-                  writingMode: "vertical-rl",
-                  letterSpacing: 2,
-                }}
-              >
-                KEEP MOVING
-              </Typography>
-
-              <Box
-                sx={{
-                  width: 1,
-                  height: 38,
-                  background: "rgba(255,255,255,.6)",
-                }}
-              />
-            </Stack>
-
-            {/* Bottom campaign content */}
-            <Box
-              sx={{
-                position: "absolute",
-                left: { xs: 25, sm: 38 },
-                right: { xs: 22, sm: 36 },
-                bottom: { xs: 27, sm: 38 },
-              }}
-            >
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={1}
-                sx={{ mb: 1.5 }}
-              >
-                <Box
-                  sx={{
-                    width: 25,
-                    height: 2,
-                    background: COLORS.yellow,
-                  }}
-                />
-
-                <Typography
-                  sx={{
-                    color: COLORS.yellow,
-                    fontSize: 9,
-                    fontWeight: 900,
-                    letterSpacing: 3,
-                  }}
-                >
-                  FUEL YOUR POTENTIAL
-                </Typography>
-              </Stack>
-
-              <Stack
-                direction="row"
-                alignItems="flex-end"
-                justifyContent="space-between"
-                gap={1}
-              >
-                <Box sx={{ minWidth: 0 }}>
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      fontFamily: "Anton",
-                      fontSize: { xs: 47, sm: 66, md: 76 },
-                      lineHeight: 0.83,
-                      letterSpacing: 1,
-                      textShadow: "0 5px 25px rgba(0,0,0,.35)",
-                    }}
-                  >
-                    MUSCLE
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      color: COLORS.yellow,
-                      fontFamily: "Anton",
-                      fontSize: { xs: 47, sm: 66, md: 76 },
-                      lineHeight: 0.95,
-                      letterSpacing: 1,
-                    }}
-                  >
-                    FUEL.
-                  </Typography>
-                </Box>
-
-                {/* Protein seal */}
-                <Box
-                  sx={{
-                    flexShrink: 0,
-                    width: { xs: 68, sm: 91 },
-                    height: { xs: 68, sm: 91 },
-                    mb: 0.5,
-                    borderRadius: "50%",
-                    background: COLORS.yellow,
-                    color: COLORS.dark,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    border: "4px solid rgba(255,255,255,.7)",
-                    outline: "1px solid rgba(255,228,92,.8)",
-                    outlineOffset: 4,
-                    boxShadow: "0 10px 30px rgba(0,0,0,.45)",
-                    transform: "rotate(9deg)",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: "Anton",
-                      fontSize: { xs: 25, sm: 33 },
-                      lineHeight: 1,
-                    }}
-                  >
-                    20G
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      fontSize: 7,
-                      fontWeight: 900,
-                      letterSpacing: 1.2,
-                    }}
-                  >
-                    PROTEIN
-                  </Typography>
-                </Box>
-              </Stack>
-
-              <Divider
-                sx={{
-                  my: 1.8,
-                  borderColor: "rgba(255,255,255,.3)",
-                }}
-              />
-
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography
-                  sx={{
-                    color: "rgba(255,255,255,.82)",
-                    fontSize: { xs: 8, sm: 10 },
-                    letterSpacing: 1,
-                    fontWeight: 700,
-                  }}
-                >
-                  BIG ENERGY. BOLD FLAVOUR.
-                </Typography>
-
-                <Typography
-                  sx={{
-                    color: COLORS.yellow,
-                    fontSize: 8,
-                    fontWeight: 900,
-                    letterSpacing: 1.5,
-                  }}
-                >
-                  MADE TO MOVE →
-                </Typography>
-              </Stack>
-            </Box>
-
-            {/* Inner corner accents */}
-            <Box
-              sx={{
-                position: "absolute",
-                top: 0,
-                right: "10%",
-                width: 42,
-                height: 42,
-                borderTop: `2px solid ${COLORS.yellow}`,
-                borderRight: `2px solid ${COLORS.yellow}`,
-                opacity: 0.85,
-                pointerEvents: "none",
-              }}
-            />
-
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 0,
-                left: "10%",
-                width: 42,
-                height: 42,
-                borderBottom: `2px solid ${COLORS.yellow}`,
-                borderLeft: `2px solid ${COLORS.yellow}`,
-                opacity: 0.85,
-                pointerEvents: "none",
-              }}
-            />
-          </Box>
-
-          {/* Outside corner brackets */}
-          {[
-            {
-              top: 0,
-              left: 0,
-              borderTop: `3px solid ${COLORS.yellow}`,
-              borderLeft: `3px solid ${COLORS.yellow}`,
-            },
-            {
-              top: 0,
-              right: 0,
-              borderTop: `3px solid ${COLORS.yellow}`,
-              borderRight: `3px solid ${COLORS.yellow}`,
-            },
-            {
-              bottom: 0,
-              left: 0,
-              borderBottom: `3px solid ${COLORS.yellow}`,
-              borderLeft: `3px solid ${COLORS.yellow}`,
-            },
-            {
-              bottom: 0,
-              right: 0,
-              borderBottom: `3px solid ${COLORS.yellow}`,
-              borderRight: `3px solid ${COLORS.yellow}`,
-            },
-          ].map((corner, index) => (
-            <Box
-              key={index}
-              className="story-corner"
-              sx={{
-                position: "absolute",
-                width: 35,
-                height: 35,
-                zIndex: 3,
-                opacity: 0.8,
-                pointerEvents: "none",
-                transition: "all .4s cubic-bezier(.2,.7,.2,1)",
-                ...corner,
-              }}
-            />
-          ))}
-
-          {/* Image footer */}
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ mt: 3, px: 0.5 }}
-          >
-            <Box>
-              <Typography
-                sx={{
-                  color: "rgba(255,255,255,.9)",
-                  fontSize: 9,
-                  fontWeight: 900,
-                  letterSpacing: 2,
-                }}
-              >
-                REAL FUEL. REAL MOVEMENT.
-              </Typography>
-
-              <Typography
-                sx={{
-                  mt: 0.5,
-                  color: "rgba(255,255,255,.45)",
-                  fontSize: 7,
-                  letterSpacing: 1.5,
-                }}
-              >
-                PERFORMANCE NUTRITION SERIES
-              </Typography>
-            </Box>
-
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Box
-                sx={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: "50%",
-                  background: COLORS.yellow,
-                  boxShadow: `0 0 12px ${COLORS.yellow}`,
-                }}
-              />
-
-              <Typography
-                sx={{
-                  color: COLORS.yellow,
-                  fontSize: 8,
-                  fontWeight: 900,
-                  letterSpacing: 1.5,
-                }}
-              >
-                EST. FOR EVERYONE
-              </Typography>
-            </Stack>
-          </Stack>
-        </Box>
-      </Reveal>
-    </Box>
-  </Container>
-</Box>
-
-        {/* =====================================
-            FLAVOURS
-        ===================================== */}
-
-
-{/* =====================================
-    FLAVOURS — PREMIUM 3D ANIMATED CARDS
-===================================== */}
-
-<Box
-  component="section"
-  id="flavours"
-  sx={{
-    py: { xs: 9, md: 14 },
-    background: COLORS.cream,
-    position: "relative",
-    overflow: "hidden",
-    perspective: "1400px",
-
-    "@keyframes floatBadge": {
-      "0%, 100%": { transform: "translateY(0px) rotate(8deg)" },
-      "50%": { transform: "translateY(-9px) rotate(12deg)" },
-    },
-    "@keyframes ambientFloat": {
-      "0%, 100%": { transform: "translateY(0px) scale(1)" },
-      "50%": { transform: "translateY(-15px) scale(1.04)" },
-    },
-    "@keyframes shine": {
-      "0%": { transform: "translateX(-150%) skewX(-20deg)" },
-      "100%": { transform: "translateX(250%) skewX(-20deg)" },
-    },
-  }}
->
-  {/* BACKGROUND GLOW */}
-  <Box
-    sx={{
-      position: "absolute",
-      top: "15%",
-      left: "-120px",
-      width: 300,
-      height: 300,
-      borderRadius: "50%",
-      background: "rgba(233,104,45,.10)",
-      filter: "blur(90px)",
-      animation: "ambientFloat 7s ease-in-out infinite",
-      pointerEvents: "none",
-    }}
-  />
-
-  <Box
-    sx={{
-      position: "absolute",
-      right: "-100px",
-      bottom: "5%",
-      width: 320,
-      height: 320,
-      borderRadius: "50%",
-      background: "rgba(255,228,92,.16)",
-      filter: "blur(90px)",
-      animation: "ambientFloat 9s ease-in-out infinite",
-      pointerEvents: "none",
-    }}
-  />
-
-  <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1 }}>
-    <Reveal>
-      <SectionHeading
-        eyebrow="Find your favourite"
-        title="Most popular flavours"
-        action={
-          <Button
-            endIcon={<ArrowUpRight size={17} />}
-            sx={{
-              color: COLORS.orange,
-              fontSize: 10,
-              fontWeight: 900,
-              letterSpacing: 1,
-              textTransform: "uppercase",
-              borderBottom: `1px solid ${COLORS.orange}`,
-              borderRadius: 0,
-              "&:hover": {
-                background: "transparent",
-                color: COLORS.brown,
-              },
-            }}
-          >
-            View all flavours
-          </Button>
-        }
-      />
-    </Reveal>
-
-    {/* PRODUCT GRID */}
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: {
-          xs: "1fr",
-          sm: "repeat(2,1fr)",
-          md: "repeat(3,1fr)",
-        },
-        gap: { xs: 3, md: 3.5 },
-        perspective: "1400px",
-      }}
-    >
-      {flavours.map((item, i) => (
-        <Reveal key={item.name} delay={i * 0.12}>
-          <Box
-            sx={{
-              height: "100%",
-              perspective: "1200px",
-            }}
-          >
-            <Card
-              elevation={0}
-              sx={{
-                height: "100%",
-                position: "relative",
-                overflow: "hidden",
-                borderRadius: "10px",
-                background: COLORS.white,
-                border: "1px solid rgba(56,37,29,.09)",
-                transformStyle: "preserve-3d",
-                transform: "perspective(1200px) rotateX(0deg) rotateY(0deg)",
-                transition:
-                  "transform .55s cubic-bezier(.2,.8,.2,1), box-shadow .55s ease",
-                boxShadow: "0 8px 25px rgba(56,37,29,.06)",
-
-                "&:hover": {
-                  transform:
-                    "perspective(1200px) rotateX(2deg) rotateY(-2deg) translateY(-12px)",
-                  boxShadow:
-                    "0 30px 65px rgba(56,37,29,.18), 0 8px 20px rgba(233,104,45,.10)",
-                },
-
-                "&:hover .product-image": {
-                  transform: "scale(1.12) translateZ(25px)",
-                },
-
-                "&:hover .product-glow": {
-                  opacity: 1,
-                  transform: "scale(1.2)",
-                },
-
-                "&:hover .product-shine": {
-                  animation: "shine 1s ease forwards",
-                },
-
-                "&:hover .product-number": {
-                  color: COLORS.yellow,
-                  transform: "translateZ(35px) scale(1.1)",
-                },
-
-                "&:hover .protein-badge": {
-                  transform: "translateY(-8px) rotate(14deg) scale(1.08)",
-                },
-
-                "&:hover .cart-arrow": {
-                  background: COLORS.yellow,
-                  color: COLORS.dark,
-                  transform: "rotate(45deg) scale(1.1)",
-                },
-              }}
-            >
-              {/* IMAGE AREA */}
-              <Box
-                sx={{
-                  height: { xs: 310, md: 340 },
-                  position: "relative",
-                  overflow: "hidden",
-                  background: "#E9DFD0",
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                <Box
-                  className="product-glow"
-                  sx={{
-                    position: "absolute",
-                    inset: 0,
-                    zIndex: 1,
-                    opacity: 0,
-                    background:
-                      "radial-gradient(circle at 50% 45%, rgba(255,228,92,.3), transparent 65%)",
-                    transition: "all .6s ease",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                <Box
-                  component="img"
-                  className="product-image"
-                  src={item.image}
-                  alt={`${item.name} protein bar`}
-                  loading="lazy"
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    transition:
-                      "transform .9s cubic-bezier(.2,.7,.2,1)",
-                    transform: "translateZ(0)",
-                  }}
-                />
-
-                {/* DARK IMAGE GRADIENT */}
-                <Box
-                  sx={{
-                    position: "absolute",
-                    inset: 0,
-                    zIndex: 1,
-                    background:
-                      "linear-gradient(180deg,rgba(23,13,9,.18),transparent 40%,rgba(23,13,9,.35))",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                {/* SHINE EFFECT */}
-                <Box
-                  className="product-shine"
-                  sx={{
-                    position: "absolute",
-                    zIndex: 2,
-                    top: 0,
-                    left: 0,
-                    width: "35%",
-                    height: "100%",
-                    opacity: 0,
-                    background:
-                      "linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent)",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                {/* PRODUCT NUMBER */}
-                <Typography
-                  className="product-number"
-                  sx={{
-                    position: "absolute",
-                    zIndex: 3,
-                    top: 18,
-                    left: 20,
-                    color: "#fff",
-                    fontFamily: "Anton",
-                    fontSize: 25,
-                    letterSpacing: 2,
-                    textShadow: "0 3px 12px rgba(0,0,0,.3)",
-                    transition: ".4s ease",
-                  }}
-                >
-                  0{i + 1}
-                </Typography>
-
-                {/* FLOATING PROTEIN BADGE */}
-                <Box
-                  className="protein-badge"
-                  sx={{
-                    position: "absolute",
-                    zIndex: 4,
-                    top: 17,
-                    right: 17,
-                    width: 70,
-                    height: 70,
-                    borderRadius: "50%",
-                    background: COLORS.yellow,
-                    color: COLORS.dark,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    boxShadow:
-                      "0 8px 25px rgba(0,0,0,.22), inset 0 2px 5px rgba(255,255,255,.55)",
-                    animation: "floatBadge 3.5s ease-in-out infinite",
-                    animationDelay: `${i * 0.5}s`,
-                    transition: ".4s ease",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: "Anton",
-                      fontSize: 25,
-                      lineHeight: 1,
-                    }}
-                  >
-                    20G
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontSize: 7,
-                      fontWeight: 900,
-                      letterSpacing: 1,
-                    }}
-                  >
-                    PROTEIN
-                  </Typography>
-                </Box>
-
-                {/* IMAGE LABEL */}
-                <Box
-                  sx={{
-                    position: "absolute",
-                    zIndex: 3,
-                    bottom: 18,
-                    left: 18,
-                    px: 1.5,
-                    py: 0.8,
-                    background: "rgba(23,13,9,.78)",
-                    backdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255,255,255,.2)",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      fontSize: 9,
-                      fontWeight: 900,
-                      letterSpacing: 1.8,
-                    }}
-                  >
-                    ONE PROTEIN
-                  </Typography>
-                </Box>
-              </Box>
-
-              {/* PRODUCT DETAILS */}
-              <CardContent
-                sx={{
-                  p: { xs: 2.5, md: 3 },
-                  position: "relative",
-                  background:
-                    "linear-gradient(145deg,#FFFCF6 0%,#F8F3E9 100%)",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: COLORS.orange,
-                    fontSize: 9,
-                    fontWeight: 900,
-                    letterSpacing: 2,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  SIGNATURE FLAVOUR
-                </Typography>
-
-                <Typography
-                  component="h3"
-                  sx={{
-                    mt: 1,
-                    color: COLORS.brown,
-                    fontFamily: "Barlow Condensed",
-                    fontSize: { xs: 32, md: 36 },
-                    fontWeight: 900,
-                    lineHeight: 1,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {item.name}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    mt: 1,
-                    mb: 2.5,
-                    color: COLORS.muted,
-                    fontSize: 12,
-                  }}
-                >
-                  {item.detail}
-                </Typography>
-
-                <Divider
-                  sx={{
-                    borderColor: "rgba(56,37,29,.12)",
-                    mb: 2,
-                  }}
-                />
-
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Typography
-                    sx={{
-                      color: COLORS.brown,
-                      fontFamily: "Anton",
-                      fontSize: 31,
-                    }}
-                  >
-                    {item.price}
-                  </Typography>
-
+            <Reveal>
+              <SectionHeading
+                eyebrow="Find your favourite"
+                title="Most popular flavours"
+                action={
                   <Button
-                    endIcon={
-                      <Box
-                        className="cart-arrow"
-                        sx={{
-                          width: 32,
-                          height: 32,
-                          borderRadius: "50%",
-                          display: "grid",
-                          placeItems: "center",
-                          background: COLORS.orange,
-                          color: "#fff",
-                          transition: ".35s ease",
-                        }}
-                      >
-                        <ArrowUpRight size={17} />
-                      </Box>
-                    }
+                    endIcon={<ArrowUpRight size={17} />}
                     sx={{
-                      color: COLORS.brown,
+                      color: COLORS.orange,
                       fontSize: 10,
                       fontWeight: 900,
-                      letterSpacing: 0.5,
+                      letterSpacing: 1,
                       textTransform: "uppercase",
+                      borderBottom: `1px solid ${COLORS.orange}`,
+                      borderRadius: 0,
+
                       "&:hover": {
                         background: "transparent",
+                        color: COLORS.brown,
                       },
                     }}
                   >
-                    Add to cart
+                    View all flavours
                   </Button>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Box>
-        </Reveal>
-      ))}
-    </Box>
-  </Container>
-</Box>
+                }
+              />
+            </Reveal>
 
+            {/* PRODUCT GRID */}
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "minmax(0, 1fr)",
+                  sm: "repeat(2, minmax(0, 1fr))",
+                  md: "repeat(3, minmax(0, 1fr))",
+                },
+                gap: { xs: 3, md: 3.5 },
+                alignItems: "stretch",
+                perspective: "1400px",
+              }}
+            >
+              {flavours.map((item, i) => (
+                <Reveal
+                  key={item.name}
+                  delay={i * 0.12}
+                  sx={{ height: "100%" }}
+                >
+                  <Box
+                    sx={{
+                      height: "100%",
+                      perspective: "1200px",
+                    }}
+                  >
+                    <Card
+                      elevation={0}
+                      sx={{
+                        height: "100%",
+                        position: "relative",
+                        overflow: "hidden",
+                        borderRadius: "10px",
+                        background: COLORS.white,
+                        border: "1px solid rgba(56,37,29,.09)",
+                        transformStyle: "preserve-3d",
+                        transform:
+                          "perspective(1200px) rotateX(0deg) rotateY(0deg)",
+                        transition:
+                          "transform .55s cubic-bezier(.2,.8,.2,1), box-shadow .55s ease",
+                        boxShadow: "0 8px 25px rgba(56,37,29,.06)",
 
+                        "&:hover": {
+                          transform:
+                            "perspective(1200px) rotateX(2deg) rotateY(-2deg) translateY(-12px)",
+                          boxShadow:
+                            "0 30px 65px rgba(56,37,29,.18), 0 8px 20px rgba(233,104,45,.10)",
+                        },
+
+                        "&:hover .product-image": {
+                          transform: "scale(1.12) translateZ(25px)",
+                        },
+
+                        "&:hover .product-glow": {
+                          opacity: 1,
+                          transform: "scale(1.2)",
+                        },
+
+                        "&:hover .product-shine": {
+                          animation: "shine 1s ease forwards",
+                        },
+
+                        "&:hover .product-number": {
+                          color: COLORS.yellow,
+                          transform: "translateZ(35px) scale(1.1)",
+                        },
+
+                        "&:hover .protein-badge": {
+                          transform:
+                            "translateY(-8px) rotate(14deg) scale(1.08)",
+                        },
+
+                        "&:hover .cart-arrow": {
+                          background: COLORS.yellow,
+                          color: COLORS.dark,
+                          transform: "rotate(45deg) scale(1.1)",
+                        },
+                      }}
+                    >
+                      {/* IMAGE AREA */}
+                      <Box
+                        sx={{
+                          height: { xs: 310, md: 340 },
+                          position: "relative",
+                          overflow: "hidden",
+                          background: "#E9DFD0",
+                          transformStyle: "preserve-3d",
+                        }}
+                      >
+                        <Box
+                          className="product-glow"
+                          sx={{
+                            position: "absolute",
+                            inset: 0,
+                            zIndex: 1,
+                            opacity: 0,
+                            background:
+                              "radial-gradient(circle at 50% 45%, rgba(255,228,92,.3), transparent 65%)",
+                            transition: "all .6s ease",
+                            pointerEvents: "none",
+                          }}
+                        />
+
+                        <Box
+                          component="img"
+                          className="product-image"
+                          src={item.image}
+                          alt={`${item.name} protein bar`}
+                          loading="lazy"
+                          sx={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            transition:
+                              "transform .9s cubic-bezier(.2,.7,.2,1)",
+                            transform: "translateZ(0)",
+                          }}
+                        />
+
+                        {/* DARK IMAGE GRADIENT */}
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            inset: 0,
+                            zIndex: 1,
+                            background:
+                              "linear-gradient(180deg,rgba(23,13,9,.18),transparent 40%,rgba(23,13,9,.35))",
+                            pointerEvents: "none",
+                          }}
+                        />
+
+                        {/* SHINE EFFECT */}
+                        <Box
+                          className="product-shine"
+                          sx={{
+                            position: "absolute",
+                            zIndex: 2,
+                            top: 0,
+                            left: 0,
+                            width: "35%",
+                            height: "100%",
+                            opacity: 0,
+                            background:
+                              "linear-gradient(90deg,transparent,rgba(255,255,255,.24),transparent)",
+                            pointerEvents: "none",
+                          }}
+                        />
+
+                        {/* PRODUCT NUMBER */}
+                        <Typography
+                          className="product-number"
+                          sx={{
+                            position: "absolute",
+                            zIndex: 3,
+                            top: 18,
+                            left: 20,
+                            color: "#fff",
+                            fontFamily: "Anton",
+                            fontSize: 25,
+                            letterSpacing: 2,
+                            textShadow: "0 3px 12px rgba(0,0,0,.3)",
+                            transition: ".4s ease",
+                          }}
+                        >
+                          0{i + 1}
+                        </Typography>
+
+                        {/* FLOATING PROTEIN BADGE */}
+                        <Box
+                          className="protein-badge"
+                          sx={{
+                            position: "absolute",
+                            zIndex: 4,
+                            top: 17,
+                            right: 17,
+                            width: 70,
+                            height: 70,
+                            borderRadius: "50%",
+                            background: COLORS.yellow,
+                            color: COLORS.dark,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            boxShadow:
+                              "0 8px 25px rgba(0,0,0,.22), inset 0 2px 5px rgba(255,255,255,.55)",
+                            animation:
+                              "floatBadge 3.5s ease-in-out infinite",
+                            animationDelay: `${i * 0.5}s`,
+                            transition: ".4s ease",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              fontFamily: "Anton",
+                              fontSize: 25,
+                              lineHeight: 1,
+                            }}
+                          >
+                            20G
+                          </Typography>
+
+                          <Typography
+                            sx={{
+                              fontSize: 7,
+                              fontWeight: 900,
+                              letterSpacing: 1,
+                            }}
+                          >
+                            PROTEIN
+                          </Typography>
+                        </Box>
+
+                        {/* IMAGE LABEL */}
+                        <Box
+                          sx={{
+                            position: "absolute",
+                            zIndex: 3,
+                            bottom: 18,
+                            left: 18,
+                            px: 1.5,
+                            py: 0.8,
+                            background: "rgba(23,13,9,.78)",
+                            backdropFilter: "blur(10px)",
+                            border: "1px solid rgba(255,255,255,.2)",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              color: "#fff",
+                              fontSize: 9,
+                              fontWeight: 900,
+                              letterSpacing: 1.8,
+                            }}
+                          >
+                            ONE PROTEIN
+                          </Typography>
+                        </Box>
+                      </Box>
+
+                      {/* PRODUCT DETAILS */}
+                      <CardContent
+                        sx={{
+                          p: { xs: 2.5, md: 3 },
+                          position: "relative",
+                          background:
+                            "linear-gradient(145deg,#FFFCF6 0%,#F8F3E9 100%)",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            color: COLORS.orange,
+                            fontSize: 9,
+                            fontWeight: 900,
+                            letterSpacing: 2,
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          SIGNATURE FLAVOUR
+                        </Typography>
+
+                        <Typography
+                          component="h3"
+                          sx={{
+                            mt: 1,
+                            color: COLORS.brown,
+                            fontFamily: "Barlow Condensed",
+                            fontSize: { xs: 32, md: 36 },
+                            fontWeight: 900,
+                            lineHeight: 1,
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {item.name}
+                        </Typography>
+
+                        <Typography
+                          sx={{
+                            mt: 1,
+                            mb: 2.5,
+                            color: COLORS.muted,
+                            fontSize: 12,
+                          }}
+                        >
+                          {item.detail}
+                        </Typography>
+
+                        <Divider
+                          sx={{
+                            borderColor: "rgba(56,37,29,.12)",
+                            mb: 2,
+                          }}
+                        />
+
+                        <Stack
+                          direction="row"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Typography
+                            sx={{
+                              color: COLORS.brown,
+                              fontFamily: "Anton",
+                              fontSize: 31,
+                            }}
+                          >
+                            {item.price}
+                          </Typography>
+
+                          <Button
+                            endIcon={
+                              <Box
+                                className="cart-arrow"
+                                sx={{
+                                  width: 32,
+                                  height: 32,
+                                  borderRadius: "50%",
+                                  display: "grid",
+                                  placeItems: "center",
+                                  background: COLORS.orange,
+                                  color: "#fff",
+                                  transition: ".35s ease",
+                                }}
+                              >
+                                <ArrowUpRight size={17} />
+                              </Box>
+                            }
+                            sx={{
+                              color: COLORS.brown,
+                              fontSize: 10,
+                              fontWeight: 900,
+                              letterSpacing: 0.5,
+                              textTransform: "uppercase",
+
+                              "&:hover": {
+                                background: "transparent",
+                              },
+                            }}
+                          >
+                            Add to cart
+                          </Button>
+                        </Stack>
+                      </CardContent>
+                    </Card>
+                  </Box>
+                </Reveal>
+              ))}
+            </Box>
+          </PageContainer>
+        </Box>
 
         {/* =====================================
             REVIEWS
@@ -2120,13 +2225,13 @@ export default function App() {
             background: COLORS.brown,
           }}
         >
-          <Container maxWidth="lg">
+          <PageContainer>
             <Box
               sx={{
                 display: "grid",
                 gridTemplateColumns: {
-                  xs: "1fr",
-                  md: ".85fr 1.15fr",
+                  xs: "minmax(0, 1fr)",
+                  md: "minmax(0, .85fr) minmax(0, 1.15fr)",
                 },
                 alignItems: "center",
                 gap: { xs: 5, md: 10 },
@@ -2171,8 +2276,8 @@ export default function App() {
                       lineHeight: 1.9,
                     }}
                   >
-                    Great texture, bold flavour and an easy protein boost for my
-                    day.
+                    Great texture, bold flavour and an easy protein boost for
+                    my day.
                   </Typography>
 
                   <Typography
@@ -2223,12 +2328,12 @@ export default function App() {
                     lineHeight: 1.9,
                   }}
                 >
-                  From early workouts to late-night projects, keep showing up as
-                  your strongest self.
+                  From early workouts to late-night projects, keep showing up
+                  as your strongest self.
                 </Typography>
               </Reveal>
             </Box>
-          </Container>
+          </PageContainer>
         </Box>
 
         {/* =====================================
@@ -2242,7 +2347,7 @@ export default function App() {
             background: COLORS.cream,
           }}
         >
-          <Container maxWidth="lg">
+          <PageContainer>
             <Reveal>
               <Box
                 sx={{
@@ -2294,11 +2399,12 @@ export default function App() {
               sx={{
                 display: "grid",
                 gridTemplateColumns: {
-                  xs: "1fr",
-                  sm: "repeat(2,1fr)",
-                  md: "repeat(3,1fr)",
+                  xs: "minmax(0, 1fr)",
+                  sm: "repeat(2, minmax(0, 1fr))",
+                  md: "repeat(3, minmax(0, 1fr))",
                 },
                 gap: 2.5,
+                alignItems: "stretch",
               }}
             >
               {[
@@ -2318,12 +2424,14 @@ export default function App() {
                     sx={{
                       position: "relative",
                       minHeight: 290,
+                      height: "100%",
                       overflow: "hidden",
                       background: "#352018",
                       display: "flex",
                       flexDirection: "column",
                       justifyContent: "flex-end",
                       p: 3,
+
                       "&:hover img": {
                         transform: "scale(1.06)",
                       },
@@ -2381,6 +2489,7 @@ export default function App() {
                 <Box
                   sx={{
                     minHeight: 290,
+                    height: "100%",
                     p: 3,
                     display: "flex",
                     flexDirection: "column",
@@ -2412,7 +2521,7 @@ export default function App() {
                 </Box>
               </Reveal>
             </Box>
-          </Container>
+          </PageContainer>
         </Box>
 
         {/* =====================================
@@ -2426,13 +2535,13 @@ export default function App() {
             background: COLORS.dark,
           }}
         >
-          <Container maxWidth="lg">
+          <PageContainer>
             <Box
               sx={{
                 display: "grid",
                 gridTemplateColumns: {
-                  xs: "1fr",
-                  md: "1fr .8fr",
+                  xs: "minmax(0, 1fr)",
+                  md: "minmax(0, 1fr) minmax(0, .8fr)",
                 },
                 alignItems: "center",
                 gap: 7,
@@ -2508,6 +2617,7 @@ export default function App() {
                         background: "#fff",
                         fontSize: 12,
                       },
+
                       "& .MuiOutlinedInput-notchedOutline": {
                         border: "none",
                       },
@@ -2526,7 +2636,7 @@ export default function App() {
                 </Box>
               </Reveal>
             </Box>
-          </Container>
+          </PageContainer>
         </Box>
       </Box>
 
@@ -2544,13 +2654,13 @@ export default function App() {
           background: "#130B08",
         }}
       >
-        <Container maxWidth="lg">
+        <PageContainer>
           <Box
             sx={{
               display: "grid",
               gridTemplateColumns: {
-                xs: "repeat(2,1fr)",
-                md: "1.5fr repeat(3,1fr)",
+                xs: "repeat(2, minmax(0, 1fr))",
+                md: "1.5fr repeat(3, minmax(0, 1fr))",
               },
               gap: { xs: 4, md: 6 },
               pb: 7,
@@ -2633,6 +2743,7 @@ export default function App() {
                       fontSize: 12,
                       textDecoration: "none",
                       transition: "color .25s ease",
+
                       "&:hover": {
                         color: COLORS.yellow,
                       },
@@ -2645,7 +2756,7 @@ export default function App() {
             ))}
           </Box>
 
-          {/* Footer bottom */}
+          {/* FOOTER BOTTOM */}
           <Stack
             direction={{ xs: "column", sm: "row" }}
             alignItems="center"
@@ -2664,6 +2775,7 @@ export default function App() {
                     color: "#fff",
                     cursor: "pointer",
                     transition: "color .25s ease",
+
                     "&:hover": {
                       color: COLORS.yellow,
                     },
@@ -2696,7 +2808,7 @@ export default function App() {
             </Typography>
           </Stack>
 
-          {/* Giant brand text */}
+          {/* GIANT BRAND TEXT */}
           <Typography
             sx={{
               mt: 5,
@@ -2714,7 +2826,7 @@ export default function App() {
           >
             ONE PROTEIN
           </Typography>
-        </Container>
+        </PageContainer>
       </Box>
     </>
   );
